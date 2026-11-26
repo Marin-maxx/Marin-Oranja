@@ -1,0 +1,184 @@
+<section class="slider-jus" id="slider-jus">
+    <ul class="liste-jus" id="liste-jus">
+        <li class="bouteille-jus">
+            <div class="bouteille-texte">
+                <h3 class="jus-titre">SOFT JUICE</h3>
+                <p class="jus-categorie">Profil humain</p>
+                <p><strong>Goût :</strong> Doux et équilibré<br>Un jus tout en finesse, mêlant professionnalisme, esprit critique et écoute pour trouver le juste équilibre dans chaque situation.</p>
+            </div>
+            <img src="Images/bottles/jpg/b1.jpg" alt="Soft Juice">
+        </li>
+        <li class="bouteille-jus">
+            <div class="bouteille-texte">
+                <h3 class="jus-titre">HARD JUICE</h3>
+                <p class="jus-categorie">Compétences techniques</p>
+                <p><strong>Goût :</strong> Intense et corsé<br>Un concentré de compétences numériques, entre développement web, Python, jeux vidéo et vibecoding, avec une bonne dose de créativité.</p>
+            </div>
+            <img src="Images/bottles/jpg/b2.jpg" alt="Hard Juice">
+        </li>
+        <li class="bouteille-jus">
+            <div class="bouteille-texte">
+                <h3 class="jus-titre">GLOBAL LARANJA</h3>
+                <p class="jus-categorie">Langues</p>
+                <p"><strong>Goût :</strong> exotique<br>Un cocktail linguistique associant la maîtrise de l'anglais (C2) à une solide connaissance de l'allemand (B2).</p>
+            </div>
+            <img src="Images/bottles/jpg/b3.jpg" alt="Global Laranja">
+        </li>
+        <li class="bouteille-jus">
+            <div class="bouteille-texte">
+                <h3 class="jus-titre">JUICY GAME</h3>
+                <p class="jus-categorie">Centres d'intérêt</p>
+                <p"><strong>Goût :</strong> Frais et plein de caractère<br>Un mélange unique de business en ligne, de sport, de santé et de lecture, accompagné d'une curiosité insatiable et d'une envie constante d'apprendre.</p>
+            </div>
+            <img src="Images/bottles/jpg/b4.jpg" alt="Juicy Game">
+        </li>
+        <li class="bouteille-jus">
+            <div class="bouteille-texte">
+                <h3 class="jus-titre">PULP PARADISE</h3>
+                <p class="jus-categorie">Projets personnels</p>
+                <p><strong>Goût :</strong> intense et riche en pulpe<br>Deux créations maison exclusives : Dodo Master, une application de suivi du sommeil, et Orange Juice Tycoon, un jeu mobile parti d'une idée délirante.</p>
+            </div>
+            <img src="Images/bottles/jpg/b5.jpg" alt="Pulp Paradise">
+        </li>
+        <li class="bouteille-jus">
+            <div class="bouteille-texte">
+                <h3 class="jus-titre">SUNNY SQUEEZIE ;-)</h3>
+                <p class="jus-categorie">Expériences professionnelles</p>
+                <p><strong>Goût :</strong> légèrement corsé<br>Élaboré durant un stage d'observation à FenêtréA et un job étudiant à Anett (Beignon), deux expériences de terrain mêlant organisation commerciale, logistique, amélioration des conditions de travail et manutention, qui m'ont donné les outils pour presser le meilleur de chaque expérience.</p>
+            </div>
+            <img src="Images/bottles/jpg/b6.jpg" alt="Sunny Squeezie">
+        </li>
+    </ul>
+</section>
+
+
+
+<style>
+.slider-jus {
+  z-index: 30;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+}
+
+.spline-scene {
+  position: relative;
+}
+
+.liste-jus {
+    list-style-type: none;
+    margin: 0;
+    padding-top: 200px;
+    display: flex;
+}
+
+.bouteille-jus {
+    position: relative;
+}
+
+.bouteille-jus img {
+    width: 40vh;
+    transition: .3s;
+}
+
+.bouteille-texte {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: absolute;
+    z-index: 20;
+    top: -150px;
+    left: 80%;
+    width: 300px;
+    padding: 20px;
+    border-radius: 20px;
+    color: black;
+    background-color: #FCF6EC;
+    opacity: 0;
+    transition: opacity .3s ease, transform .3s ease;
+}
+
+.bouteille-jus.texte-gauche .bouteille-texte {
+    left: auto;
+    right: 80%;
+}
+
+.jus-titre {
+    font-weight: lighter;
+}
+
+.jus-categorie {
+    color: #8B837C;
+}
+
+.bouteille-jus:hover {
+    z-index: 10;
+}
+
+.bouteille-jus:hover img {
+    transform: translateY(-20px);
+    rotate: 5deg
+}
+
+.bouteille-jus:hover .bouteille-texte {
+    opacity: 1;
+    transform: translateY(-20px);
+}
+</style>
+
+
+
+
+<script>
+const slider = document.getElementById('slider-jus');
+const list = document.getElementById('liste-jus');
+let actual_position = 0;
+let desired_position = 0;
+
+function slide() {
+    list.style.transform = `translateX(${actual_position}px)`;
+}
+
+function getwidth() {
+    return list.firstElementChild.getBoundingClientRect().width;
+}
+
+function recycle() {
+    const width = getwidth();
+    while (actual_position <= -width) {
+        list.appendChild(list.firstElementChild);
+        actual_position += width;
+        desired_position += width;
+    }
+    while (actual_position > 0) {
+        list.insertBefore(list.lastElementChild, list.firstElementChild);
+        actual_position -= width;
+        desired_position -= width;
+    }
+}
+
+function animate() {
+    actual_position += (desired_position - actual_position) * 0.4;
+    recycle();
+    slide();
+    requestAnimationFrame(animate);
+}
+
+slider.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    desired_position -= (e.deltaY || e.deltaX) * 0.6;}, { passive: false });
+animate();
+
+const bouteilles = document.querySelectorAll('.bouteille-jus');
+bouteilles.forEach(bouteille => {
+    bouteille.addEventListener('mouseenter', () => {
+        const rect = bouteille.getBoundingClientRect();
+        const centreBouteille = rect.left + (rect.width / 2);
+
+        if (centreBouteille > window.innerWidth / 2) {
+        bouteille.classList.add('texte-gauche');
+        }
+        else {
+        bouteille.classList.remove('texte-gauche');
+        }
+    });
+});
+</script>
